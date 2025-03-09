@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAO Event Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        #eventDisplay {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SAO Event Generator</h1>
+    <button onclick="generateEvent()">Generate Event</button>
+    <p id="eventDisplay">Click the button to generate an event!</p>
+
+    <script>
+        const events = [
+            "You found a rare weapon!",
+            "An enemy ambushed you!",
+            "A hidden dungeon has been discovered!",
+            "A powerful boss appeared!",
+            "You met a mysterious NPC with a quest."
+        ];
+
+        function generateEvent() {
+            let randomEvent = events[Math.floor(Math.random() * events.length)];
+            document.getElementById("eventDisplay").textContent = randomEvent;
+        }
+    </script>
+
+</body>
+</html>

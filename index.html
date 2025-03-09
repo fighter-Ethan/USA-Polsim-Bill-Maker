@@ -1,49 +1,177 @@
-<script>
-    function displayBillOutput() {
-        const billNumber = document.getElementById("bill-no").value.trim();
-        const congressNumber = document.getElementById("congress-no").value.trim();
-        const billSponsor = document.getElementById("bill-sponsor").value.trim();
-        const billCosponsors = document.getElementById("bill-cosponsors").value.trim();
-        const billDescription = document.getElementById("bill-desc").value.trim();
-        const billAlsoKnownAs = document.getElementById("bill-also-known-as").value.trim();
-        const congressionalFindings = document.getElementById("congressional-findings").value.trim();
-        const billContent = document.getElementById("bill-content").value.trim();
-        const effectiveDate = document.getElementById("effective-date").value.trim();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. Political Simulation Bill Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
 
-        if (!billNumber || !congressNumber || !billSponsor || !billDescription || !congressionalFindings || !billContent || !effectiveDate) {
-            alert("Please fill in all required fields.");
-            return;
-    }
+        .container {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-    let docContent = `**U.S. Congress Bill**\n\n`;
-    docContent += `**Bill Number:** ${billNumber}\n`;
-    docContent += `**Congress Number:** ${congressNumber}\n`;
-    docContent += `**Bill Sponsor:** ${billSponsor}\n`;
-    if (billCosponsors) docContent += `**Bill Cosponsors:** ${billCosponsors}\n`;
-    docContent += `**Bill Description:**\n${billDescription}\n`;
-    if (billAlsoKnownAs) docContent += `**Also Known As:** ${billAlsoKnownAs}\n`;
-    docContent += `\n**Congressional Findings:**\n${congressionalFindings}\n`;
-    docContent += `\n**Bill Content:**\n${billContent}\n`;
-    docContent += `\n**Effective Date:** ${effectiveDate}\n`;
+        h1 {
+            color: #4caf50;
+            text-align: center;
+        }
 
-    document.getElementById("output").textContent = docContent;
-}
-</script>
+        .section {
+            margin-bottom: 30px;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 5px;
+        }
 
+        .error {
+            color: #ff4444;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #3d3d3d;
+            color: #ffffff;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #output {
+            white-space: pre-wrap;
+            background: #3d3d3d;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
         <h1>U.S. Political Simulation - Bill Generator</h1>
+        <p>All fields are required unless otherwise noted.</p>
 
-        <input type="text" id="bill-no" placeholder="Bill Number" required>
-        <input type="text" id="congress-no" placeholder="Congress Number" required>
-        <input type="text" id="bill-sponsor" placeholder="Bill Sponsor" required>
-        <input type="text" id="bill-cosponsors" placeholder="Bill Cosponsors (Optional)">
-        <textarea id="bill-desc" placeholder="Bill Description" required></textarea>
-        <input type="text" id="bill-also-known-as" placeholder="Bill Also Known As (Optional)">
-        <textarea id="congressional-findings" placeholder="Congressional Findings" required></textarea>
-        <textarea id="bill-content" placeholder="Bill Content" required></textarea>
-        <input type="text" id="effective-date" placeholder="Effective Date" required>
+        <div class="section">
+            <label for="billNumber">Bill Number:</label>
+            <input type="text" id="billNumber" placeholder="Bill Number" required>
+        </div>
+        <div class="section">
+            <label for="congressNumber">Congress Number:</label>
+            <input type="text" id="congressNumber" placeholder="Congress Number" required>
+        </div>
+        <div class="section">
+            <label for="billSponsor">Bill Sponsor:</label>
+            <input type="text" id="billSponsor" placeholder="Bill Sponsor" required>
+        </div>
+        <div class="section">
+            <label for="billCosponsors">Bill Cosponsors (optional):</label>
+            <input type="text" id="billCosponsors" placeholder="Bill Cosponsors">
+        </div>
+        <div class="section">
+            <label for="billDescription">Bill Description:</label>
+            <textarea id="billDescription" rows="3" placeholder="Bill Description" required></textarea>
+        </div>
+        <div class="section">
+            <label for="billAKA">Bill Also Known As (optional):</label>
+            <input type="text" id="billAKA" placeholder="Bill Also Known As">
+        </div>
+        <div class="section">
+            <label for="congressionalFindings">Congressional Findings:</label>
+            <textarea id="congressionalFindings" rows="3" placeholder="Congressional Findings" required></textarea>
+        </div>
+        <div class="section">
+            <label for="billContent">Bill Content:</label>
+            <textarea id="billContent" rows="5" placeholder="Bill Content" required></textarea>
+        </div>
+        <div class="section">
+            <label for="effectiveDate">Effective Date:</label>
+            <input type="text" id="effectiveDate" placeholder="Effective Date" required>
+        </div>
 
-        <button onclick="generateGoogleDoc()">Generate Google Doc</button>
+        <button onclick="generateBillDoc()">Generate Bill Text</button>
+        <div id="error-message" class="error"></div>
+        <div id="output"></div>
     </div>
+
+    <script>
+    function generateBillDoc() {
+        const billNumber = document.getElementById("billNumber").value.trim();
+        const congressNumber = document.getElementById("congressNumber").value.trim();
+        const billSponsor = document.getElementById("billSponsor").value.trim();
+        const billCosponsors = document.getElementById("billCosponsors").value.trim();
+        const billDescription = document.getElementById("billDescription").value.trim();
+        const billAKA = document.getElementById("billAKA").value.trim();
+        const congressionalFindings = document.getElementById("congressionalFindings").value.trim();
+        const billContent = document.getElementById("billContent").value.trim();
+        const effectiveDate = document.getElementById("effectiveDate").value.trim();
+
+        // Validate required fields
+        let errors = [];
+        if (!billNumber) errors.push("Bill Number is required.");
+        if (!congressNumber) errors.push("Congress Number is required.");
+        if (!billSponsor) errors.push("Bill Sponsor is required.");
+        if (!billDescription) errors.push("Bill Description is required.");
+        if (!congressionalFindings) errors.push("Congressional Findings are required.");
+        if (!billContent) errors.push("Bill Content is required.");
+        if (!effectiveDate) errors.push("Effective Date is required.");
+
+        const errorDiv = document.getElementById("error-message");
+        if (errors.length > 0) {
+            errorDiv.style.display = "block";
+            errorDiv.innerHTML = errors.join("<br>");
+            return;
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+        }
+
+        // Build the content
+        let docContent = "";
+        docContent += "U.S. Congress Bill\n\n";
+        docContent += `Bill Number: ${billNumber}\n`;
+        docContent += `Congress Number: ${congressNumber}\n`;
+        docContent += `Bill Sponsor: ${billSponsor}\n`;
+        if (billCosponsors) {
+            docContent += `Bill Cosponsors: ${billCosponsors}\n`;
+        }
+        docContent += `\nBill Description:\n${billDescription}\n`;
+        if (billAKA) {
+            docContent += `\nAlso Known As: ${billAKA}\n`;
+        }
+        docContent += `\nCongressional Findings:\n${congressionalFindings}\n`;
+        docContent += `\nBill Content:\n${billContent}\n`;
+        docContent += `\nEffective Date: ${effectiveDate}\n`;
+
+        // Display the result for copy-paste
+        document.getElementById("output").textContent = docContent;
+    }
+    </script>
 </body>
+</html>

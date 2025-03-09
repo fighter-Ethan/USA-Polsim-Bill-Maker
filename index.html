@@ -95,6 +95,10 @@
             <input type="text" id="billCosponsors" placeholder="Bill Cosponsors">
         </div>
         <div class="section">
+            <label for="billReason">Bill Reason:</label>
+            <input type="text" id="billReason" placeholder="Bill Reason" required>
+        </div>
+        <div class="section">
             <label for="billDescription">Bill Description:</label>
             <textarea id="billDescription" rows="3" placeholder="Bill Description" required></textarea>
         </div>
@@ -154,14 +158,18 @@
 
         // Build the content
         let docContent = "";
-        docContent += "U.S. Congress Bill\n\n";
-        docContent += `Bill Number: ${billNumber}\n`;
-        docContent += `Congress Number: ${congressNumber}\n`;
-        docContent += `Bill Sponsor: ${billSponsor}\n`;
+        docContent += `Bill No. ${billNumber}\n`;
+        docContent += `Congress No. ${congressNumber}\n\n`;
+        docContent += "AN ACT\n";
+        docContent += "Relating to ${billDescription}\n\n";
+        docContent += `Introduced by ${billSponsor} on behalf of themself\n`;
         if (billCosponsors) {
-            docContent += `Bill Cosponsors: ${billCosponsors}\n`;
+        docContent += "Cosponsored by ${billCosponsors}\n\n";
         }
-        docContent += `\nBill Description:\n${billDescription}\n`;
+        docContent += "IN THE CONGRESS HERE ASSEMBLED\n\n";
+        docContent += "WHEREAS ${billReason}\n";
+        docContent += "BE IT Enacted By The United States Congress Here Assembled:\n\n\n\n";
+        
         if (billAKA) {
             docContent += `\nAlso Known As: ${billAKA}\n`;
         }

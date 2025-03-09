@@ -1,5 +1,5 @@
 <script>
-    function generateGoogleDoc() {
+    function displayBillOutput() {
         const billNumber = document.getElementById("bill-no").value.trim();
         const congressNumber = document.getElementById("congress-no").value.trim();
         const billSponsor = document.getElementById("bill-sponsor").value.trim();
@@ -13,24 +13,21 @@
         if (!billNumber || !congressNumber || !billSponsor || !billDescription || !congressionalFindings || !billContent || !effectiveDate) {
             alert("Please fill in all required fields.");
             return;
-        }
-
-        let docContent = `**U.S. Congress Bill**\n\n`;
-        docContent += `**Bill Number:** ${billNumber}\n`;
-        docContent += `**Congress Number:** ${congressNumber}\n`;
-        docContent += `**Bill Sponsor:** ${billSponsor}\n`;
-        if (billCosponsors) docContent += `**Bill Cosponsors:** ${billCosponsors}\n`;
-        docContent += `**Bill Description:** ${billDescription}\n`;
-        if (billAlsoKnownAs) docContent += `**Also Known As:** ${billAlsoKnownAs}\n`;
-        docContent += `\n**Congressional Findings:**\n${congressionalFindings}\n`;
-        docContent += `\n**Bill Content:**\n${billContent}\n`;
-        docContent += `\n**Effective Date:** ${effectiveDate}\n`;
-
-        const encodedContent = encodeURIComponent(docContent);
-        const googleDocsUrl = `https://docs.google.com/document/create?usp=sharing&title=${encodeURIComponent("Congress Bill")}&content=${encodedContent}`;
-
-        window.open(googleDocsUrl, "_blank");
     }
+
+    let docContent = `**U.S. Congress Bill**\n\n`;
+    docContent += `**Bill Number:** ${billNumber}\n`;
+    docContent += `**Congress Number:** ${congressNumber}\n`;
+    docContent += `**Bill Sponsor:** ${billSponsor}\n`;
+    if (billCosponsors) docContent += `**Bill Cosponsors:** ${billCosponsors}\n`;
+    docContent += `**Bill Description:**\n${billDescription}\n`;
+    if (billAlsoKnownAs) docContent += `**Also Known As:** ${billAlsoKnownAs}\n`;
+    docContent += `\n**Congressional Findings:**\n${congressionalFindings}\n`;
+    docContent += `\n**Bill Content:**\n${billContent}\n`;
+    docContent += `\n**Effective Date:** ${effectiveDate}\n`;
+
+    document.getElementById("output").textContent = docContent;
+}
 </script>
 
 <body>

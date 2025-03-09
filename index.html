@@ -128,9 +128,10 @@
     function generateBillDoc() {
         const billNumber = document.getElementById("billNumber").value.trim();
         const congressNumber = document.getElementById("congressNumber").value.trim();
+        const billDescription = document.getElementById("billDescription").value.trim();
+        const bill = document.getElementById("billDescription").value.trim();
         const billSponsor = document.getElementById("billSponsor").value.trim();
         const billCosponsors = document.getElementById("billCosponsors").value.trim();
-        const billDescription = document.getElementById("billDescription").value.trim();
         const billAKA = document.getElementById("billAKA").value.trim();
         const congressionalFindings = document.getElementById("congressionalFindings").value.trim();
         const billContent = document.getElementById("billContent").value.trim();
@@ -140,6 +141,7 @@
         let errors = [];
         if (!billNumber) errors.push("Bill Number is required.");
         if (!congressNumber) errors.push("Congress Number is required.");
+        if (!billDescription) errors.push("Bill Description is required.");
         if (!billSponsor) errors.push("Bill Sponsor is required.");
         if (!billDescription) errors.push("Bill Description is required.");
         if (!congressionalFindings) errors.push("Congressional Findings are required.");
@@ -160,15 +162,15 @@
         let docContent = "";
         docContent += `Bill No. ${billNumber}\n`;
         docContent += `Congress No. ${congressNumber}\n\n`;
-        docContent += "AN ACT\n";
-        docContent += "Relating to ${billDescription}\n\n";
+        docContent += 'AN ACT\n';
+        docContent += 'Relating to ${billDescription}\n\n';
         docContent += `Introduced by ${billSponsor} on behalf of themself\n`;
         if (billCosponsors) {
         docContent += "Cosponsored by ${billCosponsors}\n\n";
         }
         docContent += "IN THE CONGRESS HERE ASSEMBLED\n\n";
         docContent += "WHEREAS ${billReason}\n";
-        docContent += "BE IT Enacted By The United States Congress Here Assembled:\n\n\n\n";
+        docContent += "BE IT Enacted By The United States Congress Here Assembled:\n\n\n";
         
         if (billAKA) {
             docContent += `\nAlso Known As: ${billAKA}\n`;
